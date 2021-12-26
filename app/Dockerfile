@@ -12,9 +12,11 @@ EXPOSE 5000
 WORKDIR /app
 
 # Install any needed packages specified in requirements.txt
-COPY requirements.txt /app
+COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 # Run app.py when the container launches
-COPY *.py /app
+RUN mkdir templates
+COPY *.py .
+COPY templates/index.html templates
 CMD ["python", "app.py" ]

@@ -1,0 +1,25 @@
+<html>
+<h1>Hello!</h1>
+<h2>How to run the SQL files</h2>
+<p>Enter the APP Container and run: python main.py</p>
+<p></p>
+
+<h2>Navigate according the options below</h2>
+<ul>
+    <li>
+        To get failed SQLs: http://localhost:5000/failed
+    </li>
+    <li>
+        To get success SQLs: http://localhost:5000/success
+    </li>
+    <li>
+        To get the LOG record for a specific SQL run_id: http://localhost:5000/run_id?id=&lt;run_id&gt;
+    </li>
+    <li>
+        To update a status of an SQL to SUCCESS: http://localhost:5000/update-to-success?id=&lt;run_id&gt;
+    </li>
+    <li>
+        To drop all tables, LOG table included: http://localhost:5000/drop_tables
+    </li>
+</ul>
+</html>

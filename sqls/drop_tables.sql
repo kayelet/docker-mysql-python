@@ -1,8 +1,15 @@
+drop table A;
+drop table C;
+drop table D;
+drop table E;
+drop table F;
+drop table G;
 drop table tab1;
 drop table tab2;
 drop table tab3;
 drop table tab4;
 drop table tab5;
 drop table tab6;
+drop table tab_b;
 drop table store;
-drop table sql_run_log;
+truncate table sql_run_log;

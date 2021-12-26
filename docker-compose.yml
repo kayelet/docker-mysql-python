@@ -2,6 +2,7 @@ version: "2"
 services:
   app:
     build: ./app
+    container_name: mysql_flask_app
     links:
       - db
     ports:
@@ -12,7 +13,7 @@ services:
       - ./sqls:/tmp/
   db:
     image: mysql:5.7
-    container_name: mysql_flask
+    container_name: mysql_flask_db
     ports:
       - "32000:3306"
     environment:
