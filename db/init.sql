@@ -8,15 +8,4 @@ CREATE TABLE IF NOT EXISTS sql_run_log (
   error_message varchar(255),
   date datetime NOT NULL,
   PRIMARY KEY (run_id, sql_name, run_status)
-) ENGINE=INNODB  DEFAULT CHARSET=utf8 ;
-
-CREATE TABLE favorite_colors (
-  name VARCHAR(20),
-  color VARCHAR(10)
-);
-
-INSERT INTO favorite_colors
-  (name, color)
-VALUES
-  ('Lancelot', 'blue'),
-  ('Galahad', 'yellow');
+) ENGINE=INNODB  DEFAULT CHARSET=utf8;

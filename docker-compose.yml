@@ -10,6 +10,8 @@ services:
     depends_on:
       - db
     volumes:
+      - /var/lib/mysql
+      - ./app:/app
       - ./sqls:/tmp/
   db:
     image: mysql:5.7
