@@ -17,7 +17,6 @@ class Database:
             database=database
         )
         self.sqls_dir = sqls_dir
-        # print("self.sqls_dir: ", self.sqls_dir)
         self.cursor = self.db.cursor()
         self.db.autocommit = False
         self.logging = logging.basicConfig(level=50)
