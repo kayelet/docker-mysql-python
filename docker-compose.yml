@@ -10,7 +10,6 @@ services:
     depends_on:
       - db
     volumes:
-      - /var/lib/mysql
       - ./app:/app
       - ./sqls:/tmp/
   db:
@@ -22,3 +21,6 @@ services:
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - ./db:/docker-entrypoint-initdb.d/:ro
+      - data-volume:/var/lib/mysql
+volumes:
+  data-volume:

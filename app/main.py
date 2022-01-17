@@ -1,10 +1,6 @@
-# UTF-8
-
 # docker exec -ti 83dd95de0a0c python main.py
 from database import Database
 import sys
-from cryptography.fernet import Fernet
-
 
 def main():
     sqls_dir = "/tmp"

@@ -1,6 +1,4 @@
-# from mysql import secret_lazy_loaded_submodule
 import mysql.connector as mysql
-from mysql.connector.locales.eng import client_error
 import logging
 
 import re

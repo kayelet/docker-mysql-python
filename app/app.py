@@ -5,8 +5,6 @@ import os
 from datetime import datetime
 from database import Database
 
-# connection = Database(database="mysql_db", host="db", port="3306", user="root", password="root", sqls_dir="/tmp")
-
 config = {
     "user": "root",
     "password": "root",
@@ -25,16 +23,6 @@ def authenticate():
     if auth != "ayelet":
         return False
     return True
-
-
-# def favorite_colors() -> List[Dict]:
-#     conn = Database(**config)
-#     conn.cursor.execute('SELECT * FROM favorite_colors')
-#     results = [{name: color} for (name, color) in conn.cursor]
-#     conn.cursor.close()
-#     conn.db.close()
-#     return results
-
 
 def get_failed_sql() -> List[Dict]:
     conn = Database(**config)
@@ -75,7 +63,6 @@ def get_sql_log(runid):
         results = [{'run_id': run_id, 'sql_name': sql_name, 'run_status': run_status,
                     'error_message': error_message, 'date': date}
                    for (run_id, sql_name, run_status, error_message, date) in conn.cursor]
-        # print("results, len: ", results, len(results))
     except mysql.connector.Error as err:
         results = [{"ERROR": err.msg}]
 
@@ -122,12 +109,9 @@ def drop_tables() -> List[Dict]:
 def update_run_id_to_success(i_run_id):
     conn = Database(**config)
     try:
-        # now = datetime.now()
         conn.cursor.execute(
             f"update sql_run_log set run_status=%s, date=%s where run_id={i_run_id}"
             , ("SUCCESS", datetime.now()))
-        # ("""UPDATE mytable2 rec_open_date=%s WHERE rec_id=%s""",
-        # (open_dt, rec_id))
         if conn.cursor.rowcount == 0:
             results = [{"ERROR": f"A record with RUN_ID {i_run_id} not found."}]
         else:
@@ -137,8 +121,6 @@ def update_run_id_to_success(i_run_id):
             except mysql.connector.Error as err:
                 results = [{"Failed to commit update": err.msg}]
 
-            # for (run_id, sql_name, run_status, error_message, date) in conn.cursor]
-        # print("results, len: ", results, len(results))
     except mysql.connector.Error as err:
         results = [{"ERROR": err.msg}]
 
@@ -196,7 +178,8 @@ def drop_db_tables():
 
 @app.route('/update-to-success', methods=['GET', 'PATCH'])
 def update_runid_status():
-    authenticate()
+    if not authenticate():
+        return jsonify([{"error": "Not Authorized."}]), 401
     run_id = request.args.get("id")
     return jsonify(update_run_id=update_run_id_to_success(run_id))
 
