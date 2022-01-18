@@ -67,7 +67,7 @@ The Flask app end-points allow to perform some requests or apply actions as desc
 3. run docker-compose up
 
 You should now see the cluster via your docker-desktop
-
+![Imgur Image](docker_mysql_python_cluster.png)
 
 ## How to run the program
 * From container (from /app): python main.py  
