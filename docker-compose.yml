@@ -3,18 +3,15 @@ services:
   app:
     build: ./app
     container_name: mysql_flask_app
-    links:
-      - db
     ports:
       - "5000:5000"
     depends_on:
       - db
     volumes:
-      - ./app:/app
       - ./sqls:/tmp/
   db:
     image: mysql:5.7
-    container_name: mysql_flask_db
+    container_name: mysql_db
     ports:
       - "32000:3306"
     environment:
