@@ -35,7 +35,7 @@ When running Python script main.py, the run flow is as follows:
    
 ## Using Flask app end points to request/act on SQLs/DB tables
 The Flask app end-points allow to perform some requests or apply actions as described in the home Flask URL once the Docker cluster is up, see below:
-
+![Imgur Image](python_mysql_flask_home.png)
    
 
 ## How to run the program
