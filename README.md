@@ -8,22 +8,25 @@ The configuration consists on two containers:
 This docker cluster has been written and run on Windows 10.
 
 # project's structure
-app/
-  main.py: runs SQL files on the MYSQL database.
-  app.py: runs the Flask app
-  database.py: contains the Database class with properties and methods run by the main.py script.
-  Dockerfile: builds the mysql_flask_app container
-  requirements: contains list of Python required libraries
-  templates/
-    index.html
-db/
-  init.sql: initializes the mysql_db container by creating database 'mysql_db' and creating SQL_RUN_LOG table.
-sqls/ contains SQL init files
-  sql_run_log_0.sql: in case table is dropped, this file creating it will be the first to run by main.py
-  department_tab_10.sql: example file
-  employee_tab_20.sql: example file
-  department_ins_30.sql: example file
-docker-compose.yml: creates the docker cluster with the two containers
+app/  
+  - main.py: runs SQL files on the MYSQL database   
+  - app.py: runs the Flask app  
+  - database.py: contains the Database class with properties and methods run by the main.py script  
+  - Dockerfile: builds the mysql_flask_app container  
+  - requirements: contains list of Python required libraries  
+  - templates/  
+    -- index.html  
+
+db/  
+  - init.sql: initializes the mysql_db container by creating database 'mysql_db' and creating SQL_RUN_LOG table.  
+
+sqls/   
+  - sql_run_log_0.sql: in case table is dropped, this file creating it will be the first to run by main.py  
+  - department_tab_10.sql: example file  
+  - employee_tab_20.sql: example file  
+  - department_ins_30.sql: example file  
+
+docker-compose.yml: creates the docker cluster with the two containers  
   
 
 # Python-Mysql development Platform
@@ -54,11 +57,6 @@ When running Python script main.py, the run flow is as follows:
    employee_ins_30.sql failed, the next time main.py will run, the first SQL file to run with be with the smallest RUN_ID that is greater than 20.
 4. The main.py script will exit with error at the first FAILURE. Before exiting, a ROLLBACK will be executed for all file's statements.
    ** Of course, rollback can be applied only for DML statements.
-   
-## Using Flask app end points to request/act on SQLs/DB tables
-The Flask app end-points allow to perform some requests or apply actions as described in the home Flask URL once the Docker cluster is up, see below:
-![Imgur Image](python_mysql_flask_home.png)
-   
 
 ## Setup the Docker cluster
 (Docker-desktop installtion assumed)
@@ -68,6 +66,16 @@ The Flask app end-points allow to perform some requests or apply actions as desc
 
 You should now see the cluster via your docker-desktop
 ![Imgur Image](docker_mysql_python_cluster.png)
+
+## Flask app container: running SQL scripts
+You can either run the program from the container itself or from your local host on your OS.
+### Examples
+#### 
+
+The Flask app end-points allow to perform some requests or apply actions as described in the home Flask URL once the Docker cluster is up, see below:
+![Imgur Image](python_mysql_flask_home.png)
+   
+
 
 ## How to run the program
 * From container (from /app): python main.py  
