@@ -4,6 +4,28 @@ The configuration consists on two containers:
 1. Mysql container. Already contains DATABASE mysql_db and SQL log table SQL_RUN_LOG.
 2. Applicative python container, also allows to send requests to query/act on the SQLs scripts/tables via the Flask app.
 
+# OS
+This docker cluster has been written and run on Windows 10.
+
+# project's structure
+app/
+  main.py: runs SQL files on the MYSQL database.
+  app.py: runs the Flask app
+  database.py: contains the Database class with properties and methods run by the main.py script.
+  Dockerfile: builds the mysql_flask_app container
+  requirements: contains list of Python required libraries
+  templates/
+    index.html
+db/
+  init.sql: initializes the mysql_db container by creating database 'mysql_db' and creating SQL_RUN_LOG table.
+sqls/ contains SQL init files
+  sql_run_log_0.sql: in case table is dropped, this file creating it will be the first to run by main.py
+  department_tab_10.sql: example file
+  employee_tab_20.sql: example file
+  department_ins_30.sql: example file
+docker-compose.yml: creates the docker cluster with the two containers
+  
+
 # Python-Mysql development Platform
 ## Purpose
 The project provides dev environment allowing the user to run SQL scripts on the (Mysql) database and develop/test/run against it.
@@ -37,6 +59,15 @@ When running Python script main.py, the run flow is as follows:
 The Flask app end-points allow to perform some requests or apply actions as described in the home Flask URL once the Docker cluster is up, see below:
 ![Imgur Image](python_mysql_flask_home.png)
    
+
+## Setup the Docker cluster
+(Docker-desktop installtion assumed)
+1. clone this repository to you directory path on your OS.
+2. go to the local/repository/path
+3. run docker-compose up
+
+You should now see the cluster via your docker-desktop
+
 
 ## How to run the program
 * From container (from /app): python main.py  
