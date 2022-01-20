@@ -84,7 +84,6 @@ When running Python script main.py, the run flow is as follows:
 ### output when no files with RUN_ID higher than in SQL_RUN_LOG table found in sql files
 ![Imgur Image](run_from_terminal_no_files_to_run_ex3.png)
 
- 
 ## View Database on Mysql Client UI
 For a better view of your DB tables and run status in SQL_RUN_LOG table, configure DB on one of the Mysql available UIs.
 Example, MySql Workbench:
@@ -97,7 +96,7 @@ Example, MySql Workbench:
 Recommended: use one of the available API platform on the internet to view/act on the available flask end-points as specified in the Flask base URL.  
 Example: Postman  
 You can view the available end-points on the base Flask URL, as follows:
-![Imgur Image](python_mysql_flask_home.png)
+![Imgur Image](postman_base_url.png)
 
 ## Examples
 ### Getting the data of all SQL files that ran successfully
@@ -116,5 +115,4 @@ Configure the above in the api platform you're using under Headers. If not confg
 # Application Errors
 The program will exist with error in the following cases:
 * There is a gap greater than 10 between to a pair of SQL files that should run, or between the RUN_ID of the last SQL file registered in SQL_RUN_LOG and the next SQL file that should run.
-* There is more than one SQL file with a given RUN_ID.
-* 
+* There is more than one SQL file with the same RUN_ID.
