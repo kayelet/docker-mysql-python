@@ -105,11 +105,16 @@ You can view the available end-points on the base Flask URL, as follows:
 * to get the data of the failed SQL files enter the "failed" end-point.
 ### Getting info of a specific SQL but its RUN_ID
 ![Imgur Image](postman_run_id.png)
-### Delete tables and truncate SQL_RUN_LOG
-You can achieve the above by entring end-point "drop_tables", BUT you have to set a header key first.  
+### Drop tables and truncate SQL_RUN_LOG
+You may want to run all SQL files from the scratch, and therefore drop all your app tables along with truncating the SQL_RUN_LOG table.  
+You can achieve that by entring end-point "drop_tables", BUT you have to set a header key first.  
 In this project the value hasn't been encrypted.  
 Key-name: Api-Key-Test, Value: ayelet  
 Configure the above in the api platform you're using under Headers. If not confgured you'll get a "Not Authorized" response.
 ![Imgur Image](postman_drop_tables.png)
 
-
+# Application Errors
+The program will exist with error in the following cases:
+* There is a gap greater than 10 between to a pair of SQL files that should run, or between the RUN_ID of the last SQL file registered in SQL_RUN_LOG and the next SQL file that should run.
+* There is more than one SQL file with a given RUN_ID.
+* 
