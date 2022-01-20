@@ -48,16 +48,6 @@ The run SQL files are registered in table SQL_RUN_LOG.
    will issue an error.
 7. Two SQL files cannot have the same RUN_ID. If found, an error will be issued.   
 
-### SQLs run flow
-When running Python script main.py, the run flow is as follows:
-1. If table SQL_RUN_LOG does not exist, it will be created by running provided script sql_run_log_0.sql
-2. A record with SQL file name, its RUN_ID, status (SUCCESS or FAILURE), error (in case of FAILURE) and date are written after the run of each SQL file.
-3. The SQL files are run according to the last RUN_ID found in SQL_RUN_LOG table with status SUCCESS.
-   example A: if scripts department_tab_10.sql, employee_tab_20.sql and department_tab_10.sql, employee_tab_20.sql passed successfully while 
-   employee_ins_30.sql failed, the next time main.py will run, the first SQL file to run with be with the smallest RUN_ID that is greater than 20.
-4. The main.py script will exit with error at the first FAILURE. Before exiting, a ROLLBACK will be executed for all file's statements.
-   ** Of course, rollback can be applied only for DML statements.
-
 ## Setup and run the Docker cluster
 (Docker-desktop installtion assumed)
 1. clone this repository to you directory path on your OS.
@@ -67,9 +57,26 @@ When running Python script main.py, the run flow is as follows:
 You should now see the cluster via your docker-desktop
 ![Imgur Image](docker_mysql_python_cluster.png)
 
-## Flask app container: running SQL scripts
-You can either run the program from the container itself or from your local host on your OS.
-### Examples
+### SQLs run flow
+1. Docker container cluster must be up and running when running the SQL files.
+When running Python script main.py, the run flow is as follows:
+2. If table SQL_RUN_LOG does not exist, it will be created by running provided script sql_run_log_0.sql
+3. A record with SQL file name, its RUN_ID, status (SUCCESS or FAILURE), error (in case of FAILURE) and date are written after the run of each SQL file.
+4. The SQL files are run according to the last RUN_ID found in SQL_RUN_LOG table with status SUCCESS.
+   example A: if scripts department_tab_10.sql, employee_tab_20.sql and department_tab_10.sql, employee_tab_20.sql passed successfully while 
+   employee_ins_30.sql failed, the next time main.py will run, the first SQL file to run with be with the smallest RUN_ID that is greater than 20.
+5. The main.py script will exit with error at the first FAILURE. Before exiting, a ROLLBACK will be executed for all file's statements.  
+   Note: rollback can be applied only for DML statements.
+
+## How to run the program
+* From container (from /app): python main.py  
+* From terminal: docker exec -ti mysql_flask_app python main.py  
+* To run a specific SQL: docker exec -ti mysql_flask_app python main.py \<SQL file\>  
+* To run SQLs from a directory: docker exec -ti mysql_flask_app python main.py \<path to SQLs directory\>
+** Note: SQLs default path is /tmp  
+   if running SQL/s from a different location in container, it must be specified.  
+  
+## Examples
 #### from container
 ![Imgur Image](run_from_container_success_ex1.png)
 #### from terminal
@@ -77,36 +84,27 @@ You can either run the program from the container itself or from your local host
 ### output when no files with RUN_ID higher than in SQL_RUN_LOG table found in sql files
 ![Imgur Image](run_from_terminal_no_files_to_run_ex3.png)
 
-## Running specific SQL file
-Usage: main.py <path to SQL file>  
-Note: path must exist in container. If no path specified, the SQL file is expected to be found in container, in /tmp  
-Example (when running from terminal): docker -it mysql_flask_app main.py employee_ins_40.sql  
-
-## Running SQL files in a specific directory
-Usage: main.py <path to the directory containing the SQL files>  
-Note: only SQL files with RUN_IDs higher than registered in SQL_RUN_LOG will run. Also, directory expected to exisr in container.  
-Example (when running from terminal): docker -it mysql_flask_app main.py /tmp/new_sqls  
-  
+ 
 ## View Database on Mysql Client UI
 For a better view of your DB tables and run status in SQL_RUN_LOG table, configure DB on one of the Mysql available UIs.
-Example, MySql Workbench (user: root, 
+Example, MySql Workbench:
+![Imgur Image](config_mysql_workbench.png) 
   
-  
+## SQL_RUN_LOG view
+![Imgur Image](mysql_workbench_sql_run_log_v1.png)
 
-
-
-The Flask app end-points allow to perform some requests or apply actions as described in the home Flask URL once the Docker cluster is up, see below:
+## Operations available via Flask URL End-Points
+Recommended: use one of the available API platform on the internet to view/act on the available flask end-points as specified in the Flask base URL.  
+Example: Postman  
+You can view the available end-points on the base Flask URL, as follows:
 ![Imgur Image](python_mysql_flask_home.png)
+
+## Examples
+### getting the data of all SQL files that ran successfully
    
 
 
-## How to run the program
-* From container (from /app): python main.py  
-* From terminal: docker exec -ti mysql_flask_app python main.py  
-* To run a specific SQL: docker exec -ti mysql_flask_app python main.py <SQL>  
-* To run SQLs from a directory: docker exec -ti mysql_flask_app python main.py <dir path to SQLs>
-** Note: SQLs default path is /tmp  
-   if running SQL/s from a different location in container, it must be specified.  
+
 
 
 
