@@ -112,9 +112,3 @@ Configure the above in the api platform you're using under Headers. If not confg
 ![Imgur Image](postman_drop_tables.png)
 
 
-
-
-
-
-
-
