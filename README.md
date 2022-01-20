@@ -109,6 +109,7 @@ You can achieve the above by entring end-point "drop_tables", BUT you have to se
 In this project the key hasn't been encrypted. 
 Key-name: Api-Key-Test, Value: ayelet
 Configure the above in the api platform you're using under Headers. If not confgured you'll get a "Not Authorized" response.
+![Imgur Image](postman_drop_tables.png)
 
 
 
