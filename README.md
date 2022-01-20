@@ -15,7 +15,7 @@ app/
   - Dockerfile: builds the mysql_flask_app container  
   - requirements: contains list of Python required libraries  
   - templates/  
-    -- index.html  
+    - index.html  
 
 db/  
   - init.sql: initializes the mysql_db container by creating database 'mysql_db' and creating SQL_RUN_LOG table.  
@@ -31,7 +31,7 @@ docker-compose.yml: creates the docker cluster with the two containers
 
 # Python-Mysql development Platform
 ## Purpose
-The project provides dev environment allowing the user to run SQL scripts on the (Mysql) database and develop/test/run against it.
+The project provides dev cluster allowing the user to run SQL scripts on the (Mysql) database and develop/test/run against it in Python environment.
 The run SQL files are registered in table SQL_RUN_LOG.
 
 ### SQL scripts
@@ -58,7 +58,7 @@ When running Python script main.py, the run flow is as follows:
 4. The main.py script will exit with error at the first FAILURE. Before exiting, a ROLLBACK will be executed for all file's statements.
    ** Of course, rollback can be applied only for DML statements.
 
-## Setup the Docker cluster
+## Setup and run the Docker cluster
 (Docker-desktop installtion assumed)
 1. clone this repository to you directory path on your OS.
 2. go to the local/repository/path
@@ -70,7 +70,7 @@ You should now see the cluster via your docker-desktop
 ## Flask app container: running SQL scripts
 You can either run the program from the container itself or from your local host on your OS.
 ### Examples
-#### 
+#### from container
 
 The Flask app end-points allow to perform some requests or apply actions as described in the home Flask URL once the Docker cluster is up, see below:
 ![Imgur Image](python_mysql_flask_home.png)
