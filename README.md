@@ -104,7 +104,12 @@ You can view the available end-points on the base Flask URL, as follows:
 ![Imgur Image](postman_success.png)
 ### Getting info of a specific SQL but its RUN_ID
 ![Imgur Image](postman_run_id.png)
-   
+### Delete tables and truncate SQL_RUN_LOG
+You can achieve the above by entring end-point "drop_tables", BUT you have to set a header key first.
+In this project the key hasn't been encrypted. 
+Key-name: Api-Key-Test, Value: ayelet
+Configure the above in the api platform you're using under Headers. If not confgured you'll get a "Not Authorized" response.
+
 
 
 
