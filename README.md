@@ -71,6 +71,29 @@ You should now see the cluster via your docker-desktop
 You can either run the program from the container itself or from your local host on your OS.
 ### Examples
 #### from container
+![Imgur Image](run_from_container_success_ex1.png)
+#### from terminal
+![Imgur Image](run_from_terminal_success_ex2.png)
+### output when no files with RUN_ID higher than in SQL_RUN_LOG table found in sql files
+![Imgur Image](run_from_terminal_no_files_to_run_ex3.png)
+
+## Running specific SQL file
+Usage: main.py <path to SQL file>  
+Note: path must exist in container. If no path specified, the SQL file is expected to be found in container, in /tmp  
+Example (when running from terminal): docker -it mysql_flask_app main.py employee_ins_40.sql  
+
+## Running SQL files in a specific directory
+Usage: main.py <path to the directory containing the SQL files>  
+Note: only SQL files with RUN_IDs higher than registered in SQL_RUN_LOG will run. Also, directory expected to exisr in container.  
+Example (when running from terminal): docker -it mysql_flask_app main.py /tmp/new_sqls  
+  
+## View Database on Mysql Client UI
+For a better view of your DB tables and run status in SQL_RUN_LOG table, configure DB on one of the Mysql available UIs.
+Example, MySql Workbench (user: root, 
+  
+  
+
+
 
 The Flask app end-points allow to perform some requests or apply actions as described in the home Flask URL once the Docker cluster is up, see below:
 ![Imgur Image](python_mysql_flask_home.png)
