@@ -100,7 +100,10 @@ You can view the available end-points on the base Flask URL, as follows:
 ![Imgur Image](python_mysql_flask_home.png)
 
 ## Examples
-### getting the data of all SQL files that ran successfully
+### Getting the data of all SQL files that ran successfully
+![Imgur Image](postman_success.png)
+### Getting info of a specific SQL but its RUN_ID
+![Imgur Image](postman_run_id.png)
    
 
 
