@@ -1,3 +1,3 @@
-drop table employee;
-drop table department;
-truncate table sql_run_log;
+drop table EMPLOYEE;
+drop table DEPARTMENT;
+truncate table SQL_RUN_LOG;
