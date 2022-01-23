@@ -1,15 +1,15 @@
 # docker-python-flask
-python-flask project based on docker config. The project was created as path of self-learning and practicing Docker principles.
+python-flask project based on docker config. The project has been created as a part of self-learning and practicing Docker principles.
 The configuration consists on two containers:
 1. Mysql container. Already contains DATABASE mysql_db and SQL log table SQL_RUN_LOG.
-2. Applicative python container, also allows to send requests to query/act on the SQLs scripts/tables via the Flask app.
+2. Applicative python container, also allows sending requests to query/act on the SQLs scripts/tables via the Flask app.
 
 # OS
 This docker cluster has been written and run on Windows 10.
 
 # project's structure
 app/  
-  - main.py: runs SQL files on the MYSQL database   
+  - main.py: main program; runs SQL files on the MYSQL database   
   - app.py: runs the Flask app  
   - database.py: contains the Database class with properties and methods run by the main.py script  
   - Dockerfile: builds the mysql_flask_app container  
@@ -32,13 +32,13 @@ docker-compose.yml: creates the docker cluster with the two containers
 # Python-Mysql development Platform
 ## Purpose
 The project provides dev cluster allowing the user to run SQL scripts on the (Mysql) database and develop/test/run against it in Python environment.
-The run SQL files are registered in table SQL_RUN_LOG.
+The program registers each of the run SQL files in log table SQL_RUN_LOG.
 
 ## SQL scripts
-1. Although the table created already in image, the script for creating log table SQL_RUN_LOG already provided unders sqls: sql_run_log_0.sql
-   DO not change the RUN_ID (0) of script, it makes it the first to be run, before any other SQL file.
-2. The SQL file names must comply with name convention [a-zA-Z_]+_[0-9]+.sql
-   Although table/object name is not encorced, it is recommended to create file names with the name of the object and its type.
+1. Although the table created already in image, the script for creating log table SQL_RUN_LOG already provided under the 'sqls/' directory: sql_run_log_0.sql
+   Do not change the RUN_ID (0) of script, it makes it the first to be run, before any other SQL file.
+2. The SQL file names must comply with name convention [a-z]+[a-z0-9_]+_[0-9]+.sql, otherwise they are not recognized by the program as valid SQL files.
+   Although table/object name is not enforced, it is recommended to create file names with the name of the object and its type.
    Example: employee_tab_10.sql
 3. The number at the end of the file name represents the order in which the files should be run.  
 4. This number is referred to as the SQL RUN_ID and written as such in the SQL_RUN_LOG table.
@@ -48,9 +48,16 @@ The run SQL files are registered in table SQL_RUN_LOG.
    will issue an error.
 7. Two SQL files cannot have the same RUN_ID. If found, an error will be issued.   
 
+## Volumes defined in docker-compose.yml
+1. Data consistency: volume data-volume:/var/lib/mysql is created to ensure data consistency, so even if the container is killed,  
+   next time it is up the data previously created will be there.
+2. Mapping SQL files path: volume ./sqls:/tmp/ is created to map the SQL files in local ./sqls directory to /tmp directory in the app container.  
+   This means that the SQL files you put/add in ./sqls are seen transparently in container's path /tmp, which is the default path where  
+   the program looks for SQL files to run.
+
 ## Setup and run the Docker cluster
-(Docker-desktop installtion assumed)
-1. clone this repository to you directory path on your OS.
+(Docker-desktop installation assumed)
+1. clone this repository to your directory path on your OS.
 2. go to the local/repository/path
 3. run docker-compose up
 
@@ -120,4 +127,4 @@ The program will exist with error in the following cases:
 * There is a gap greater than 10 between to a pair of SQL files that should run, or between the RUN_ID of the last SQL file registered in SQL_RUN_LOG and the next SQL file that should run.
 * There is more than one SQL file with the same RUN_ID.  
 # DB Errors
-As mentioned above, if a failure occures while executing a statement in a SQL file, a ROLLBACK will be executed - applied on all DML statements in this file already executed prior the failure - and then the program will exit.
+As mentioned above, if a failure occurs while executing a statement in a SQL file, a ROLLBACK will be executed - applied on all DML statements in this file already executed prior the failure - and then the program will exit.

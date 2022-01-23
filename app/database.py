@@ -1,6 +1,5 @@
 import mysql.connector as mysql
 import logging
-
 import re
 import os
 from collections import Counter
@@ -68,7 +67,7 @@ class Database:
         res = self.cursor.fetchall()  # [0][0]
         if res:
             last_id_tup = res[0]
-            print("last id: ", last_id_tup)
+            print("\nlast applied RUN_ID found in SQL_RUN_LOG: ", last_id_tup)
 
         return last_id_tup
 
@@ -114,7 +113,7 @@ class Database:
             on database. SQL files must comply with name pattern
         """
 
-        pattern = re.compile(r"[a-zA-Z0-9_]+_[0-9]+\.sql$")
+        pattern = re.compile(r"[a-z]+[a-z0-9_]+_[0-9]+\.sql$")
         sql_files = []
         if i_sqls:
             if not os.path.isdir(i_sqls) and not os.path.isfile(i_sqls):
@@ -136,7 +135,7 @@ class Database:
                            int(str(file).split('.sql')[0].split('_')[-1]) > last_script_id_tup[0]]
         if not valid_sql_files:
             print(f"No valid SQL files found.")
-            print(f"** valid: with expected name pattern or with RUN_ID higher than {last_script_id_tup[0]}.")
+            print(f"** valid: matches valid name pattern ([a-z]+[a-z0-9_]+_[0-9]+.sql) and has RUN_ID higher than {last_script_id_tup[0]}.")
             self.exit_program(0)
 
         valid_sql_files.sort(key=lambda sql_file: int(str(sql_file).split('.sql')[0].split('_')[-1]))
