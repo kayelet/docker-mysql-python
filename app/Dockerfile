@@ -10,5 +10,5 @@ RUN pip install -r requirements.txt
 # Run app.py (Flask) when the container launches allowing sql info by API routes
 RUN mkdir templates
 COPY *.py .
-COPY templates/index.html templates
+COPY templates/index.html templates/
 CMD ["python", "app.py" ]

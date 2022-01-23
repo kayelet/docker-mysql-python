@@ -28,7 +28,7 @@ def get_failed_sql() -> List[Dict]:
     conn = Database(**config)
     try:
         conn.cursor.execute("SELECT run_id, sql_name, error_message, DATE_FORMAT(date, '%Y-%m-%d %h:%i:%s') "
-                            "FROM sql_run_log where run_status='FAILED'")
+                            "FROM SQL_RUN_LOG where run_status='FAILED'")
         results = [{'run_id': run_id, 'sql_name': sql_name, 'error_message': error_message, 'date': date}
                    for (run_id, sql_name, error_message, date) in conn.cursor]
     except mysql.connector.Error as err:
@@ -43,7 +43,7 @@ def get_success_sqls() -> List[Dict]:
     conn = Database(**config)
     try:
         conn.cursor.execute("SELECT run_id, sql_name, DATE_FORMAT(date, '%Y-%m-%d %h:%i:%s') "
-                            "FROM sql_run_log where run_status='SUCCESS'")
+                            "FROM SQL_RUN_LOG where run_status='SUCCESS'")
         results = [{'run_id': run_id, 'sql_name': sql_name, 'date': date}
                    for (run_id, sql_name, date) in conn.cursor]
     except mysql.connector.Error as err:
@@ -59,7 +59,7 @@ def get_sql_log(runid):
     try:
         conn.cursor.execute(
             "SELECT run_id, sql_name, run_status, error_message, DATE_FORMAT(date, '%Y-%m-%d %h:%i:%s') "
-            f"FROM sql_run_log where run_id={runid}")
+            f"FROM SQL_RUN_LOG where run_id={runid}")
         results = [{'run_id': run_id, 'sql_name': sql_name, 'run_status': run_status,
                     'error_message': error_message, 'date': date}
                    for (run_id, sql_name, run_status, error_message, date) in conn.cursor]
@@ -82,16 +82,15 @@ def drop_tables() -> List[Dict]:
         drop_commands = drop_tabs_file.read()
         if not drop_commands:
             return [{'ERROR: ': f'File {conn.sqls_dir}/drop_tables.sql is empty.'}]
-        for statement in drop_commands.split(';')[::-1]:
-            i = 0
-            if statement:
+        i = 0
+        for statement in drop_commands.split(';'):
+            if statement.strip():
                 try:
                     print(f"Running {statement}")
                     conn.cursor.execute(statement)
                     sqls_drop.append({'statement': statement, 'status': 'OK', 'i': f"{i}"})
                     i += 1
                 except mysql.connector.Error as err:
-                    i += 1
                     if err.errno == 1051:  # table does not exist
                         errors.add(err.errno)
                         continue
@@ -110,7 +109,7 @@ def update_run_id_to_success(i_run_id):
     conn = Database(**config)
     try:
         conn.cursor.execute(
-            f"update sql_run_log set run_status=%s, date=%s where run_id={i_run_id}"
+            f"update SQL_RUN_LOG set run_status=%s, date=%s where run_id={i_run_id}"
             , ("SUCCESS", datetime.now()))
         if conn.cursor.rowcount == 0:
             results = [{"ERROR": f"A record with RUN_ID {i_run_id} not found."}]

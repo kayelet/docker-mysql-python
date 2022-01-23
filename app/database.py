@@ -60,11 +60,11 @@ class Database:
             the SQL files that should run next
         """
         last_id_tup = (0, None)
-        self.cursor.execute("SHOW TABLES LIKE 'sql_run_log'")
+        self.cursor.execute("SHOW TABLES LIKE 'SQL_RUN_LOG'")
         if len(self.cursor.fetchall()) == 0:
             self.create_log_table()
-        self.cursor.execute("select run_id, sql_name from sql_run_log where "
-                            "run_id=(select max(run_id) from sql_run_log where run_status='SUCCESS')")
+        self.cursor.execute("select run_id, sql_name from SQL_RUN_LOG where "
+                            "run_id=(select max(run_id) from SQL_RUN_LOG where run_status='SUCCESS')")
         res = self.cursor.fetchall()  # [0][0]
         if res:
             last_id_tup = res[0]
@@ -96,14 +96,10 @@ class Database:
                 self.exit_program(1)
         else:  # checking gap between last run id and first sql script the user wishes to run
             files_list_copy.insert(0, last_script_id_tup[1])
-        #     if int(files_list[0].split('.sql')[0].split('_')[-1]) > 10:
-        #         print("GAP ERROR: first SQL file to run must not be with RUN_ID greater than 10.")
-        #         self.exit_program(1)
 
         logging.debug("sql copy list: {}".format(files_list_copy))
         run_id_list = [int(sql_file.split('.sql')[0].split('_')[-1]) for sql_file in files_list_copy]
         logging.debug("run_id_list: {}".format(run_id_list))
-        # print("run id list with last run_id: ", run_id_list)
         run_id_gaps = [j - i for i, j in zip(run_id_list[:-1], run_id_list[1:])]
         logging.debug("run_id_gaps: {}".format(run_id_gaps))
         wide_run_id_tups = [(files_list_copy[i], files_list_copy[i + 1])
@@ -133,8 +129,6 @@ class Database:
                 self.sqls_dir = i_sqls
 
         if not sql_files:
-            # print("files in dir: ")
-            # print(os.listdir(self.sqls_dir))
             sql_files = [file for file in os.listdir(self.sqls_dir)]
 
         valid_sql_files = [file for file in sql_files if pattern.fullmatch(file) and
@@ -160,7 +154,7 @@ class Database:
             SQL_RUN_LOG
         """
         try:
-            self.cursor.execute("select exists(select 1 from sql_run_log where run_id=%s)", (run_id,))
+            self.cursor.execute("select exists(select 1 from SQL_RUN_LOG where run_id=%s)", (run_id,))
             run_id_exists = self.cursor.fetchall()[0][0]
         except mysql.DatabaseError as error:
             print("ERROR: failed to get run id: ", error.msg)
@@ -168,12 +162,12 @@ class Database:
         try:
             if run_id_exists:
                 self.cursor.execute(
-                    "REPLACE INTO sql_run_log (run_id, sql_name, run_status, error_message, date) VALUES "
+                    "REPLACE INTO SQL_RUN_LOG (run_id, sql_name, run_status, error_message, date) VALUES "
                     "(%s, %s, %s, %s, %s)", (run_id, sql_file, status, error_msg, datetime.now()))
                 self.db.commit()
             else:
                 self.cursor.execute(
-                    "INSERT INTO sql_run_log (run_id, sql_name, run_status, error_message, date) VALUES "
+                    "INSERT INTO SQL_RUN_LOG (run_id, sql_name, run_status, error_message, date) VALUES "
                     "(%s, %s, %s, %s, %s)", (run_id, sql_file, status, error_msg, datetime.now()))
                 self.db.commit()
         except mysql.DatabaseError as error:
@@ -202,24 +196,19 @@ class Database:
     def run_sql_files_on_database(self, sql_files):
         """ Find and run relevant SQL files on DB """
 
-        # print("Running the following SQL files: ")
-        # print(*sql_files, sep="\n")
-        # print("")
         for sql_file in sql_files:
             run_id = int(sql_file.split('.sql')[0].split('_')[-1])
             print(f"Running {sql_file}.. run_id: {run_id}; ", end="")
             with open(f"{self.sqls_dir}/{sql_file}") as sql:
                 sql_command = sql.read()
+                logging.debug("sql command READ file: ", sql_command)
                 if not sql_command.replace(";", "").strip():  # file contains no statements
                     print(f"ERROR: failed to run {sql_file}: file contains no statements.")
                     self.write_to_sql_run_log(run_id=run_id, sql_file=sql_file,
                                               status="FAILED", error_msg="ERROR: SQL file contains NO statements.")
-                    # return ("ERROR", f"{error.msg}")
                     self.exit_program(1)
-                # ayelet print("sql command READ file: ", sql_command)
                 for statement in sql_command.split(';'):
-                    if not statement.strip():
-                        # print(f"statement {statement} empty, continue.")
+                    if not statement.strip(): # empty statement
                         continue
                     else:
                         self.run_statement(statement, run_id, sql_file)

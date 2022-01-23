@@ -1,8 +1,7 @@
 CREATE TABLE IF NOT EXISTS DEPARTMENT
 (
-  dept_id tinyint NOT NULL,
+  dept_id int(4) NOT NULL PRIMARY KEY,
   name varchar(255) NOT NULL,
-  description varchar(255) NOT NULL,
-  PRIMARY KEY (id)
+  description varchar(255) NOT NULL
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
