@@ -1,8 +1,9 @@
-# docker-python-flask
-python-flask project based on docker config. The project has been created as a part of self-learning and practicing Docker principles.
-The configuration consists on two containers:
-1. Mysql container. Already contains DATABASE mysql_db and SQL log table SQL_RUN_LOG.
-2. Applicative python container, also allows sending requests to query/act on the SQLs scripts/tables via the Flask app.
+# docker-mysql-python
+This is a python-mysql project based on docker cluster. The project has been created as a part of self-learning and practicing Docker principles.
+The docker-compose.yml file configures two-container cluster as follows:
+1. Mysql container. initialized with database MYSQL_DB and with creation of SQL log table SQL_RUN_LOG.
+2. Applicative python container, includes the main program running the SQL files as well as Flask server code (app.py).
+   The Flask app allows getting the run SQL related meta-data, as well as running some actions on the database, all via the provided API end points.
 
 # OS
 This docker cluster has been written and run on Windows 10.
@@ -15,7 +16,7 @@ app/
   - Dockerfile: builds the mysql_flask_app container  
   - requirements: contains list of Python required libraries  
   - templates/  
-    - index.html  
+    - index.html (represents the HTML page shown in the Flask base URL http://localhost:5000) 
 
 db/  
   - init.sql: initializes the mysql_db container by creating database 'mysql_db' and creating SQL_RUN_LOG table.  
