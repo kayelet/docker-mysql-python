@@ -1,4 +1,5 @@
-CREATE TABLE IF NOT EXISTS SQL_RUN_LOG (
+CREATE TABLE IF NOT EXISTS SQL_RUN_LOG
+(
   run_id int NOT NULL,
   sql_name varchar(100) NOT NULL,
   run_status varchar(20) NOT NULL,
@@ -6,4 +7,4 @@ CREATE TABLE IF NOT EXISTS SQL_RUN_LOG (
   date datetime NOT NULL,
   PRIMARY KEY (run_id, sql_name, run_status)
 )
-ENGINE=INNODB DEFAULT CHARSET=utf8 ;
+ENGINE=INNODB DEFAULT CHARSET=utf8;
