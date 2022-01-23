@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS EMPLOYEE (
   dept_id tinyint NOT NULL,
   PRIMARY KEY (emp_id),
   FOREIGN KEY (dept_id)
-        REFERENCES department(dept_id)
+        REFERENCES DEPARTMENT(dept_id)
         ON DELETE CASCADE
 ) ENGINE=INNODB  DEFAULT CHARSET='latin1' ;
 
