@@ -54,8 +54,8 @@ The run SQL files are registered in table SQL_RUN_LOG.
 2. go to the local/repository/path
 3. run docker-compose up
 
-You should now see the cluster via your docker-desktop
-![Imgur Image](docker_mysql_python_cluster.png)
+You should now see the cluster via your docker-desktop, as follows: 
+![plot](./README_screenshots/docker_mysql_python_cluster.png)
 
 ## SQLs run flow
 1. Docker container cluster must be up and running when running the SQL files.
@@ -78,32 +78,32 @@ When running Python script main.py, the run flow is as follows:
   
 ## Examples
 ### from container
-![Imgur Image](run_from_container_success_ex1.png)
+![plot](./README_screenshots/run_from_container_success_ex1.png)
 ### from terminal
-![Imgur Image](run_from_terminal_success_ex2.png)
+![plot](./README_screenshots/run_from_terminal_success_ex2.png)
 ### output when no files with RUN_ID higher than in SQL_RUN_LOG table found in sql files
-![Imgur Image](run_from_terminal_no_files_to_run_ex3.png)
+![plot](./README_screenshots/run_from_terminal_no_files_to_run_ex3.png)
 
 ## View Database on Mysql Client UI
 For a better view of your DB tables and run status in SQL_RUN_LOG table, configure DB on one of the Mysql available UIs.
 Example, MySql Workbench:
-![Imgur Image](config_mysql_workbench.png) 
+![plot](./README_screenshots/config_mysql_workbench.png) 
   
 ## SQL_RUN_LOG view
-![Imgur Image](mysql_workbench_sql_run_log_v1.png)
+![plot](./README_screenshots/mysql_workbench_sql_run_log_v1.png)
 
 ## Operations available via Flask URL End-Points
 Recommended: use one of the available API platform on the internet to view/act on the available flask end-points as specified in the Flask base URL.  
 Example: Postman  
 You can view the available end-points on the base Flask URL, as follows:
-![Imgur Image](postman_base_url.png)
+![plot](./README_screenshots/postman_base_url.png)
 
 ## Examples
 ### Getting the data of all SQL files that ran successfully
-![Imgur Image](postman_success.png)  
+![plot](./README_screenshots/postman_success.png)  
 * to get the data of the failed SQL files enter the "failed" end-point.
 ### Getting info of a specific SQL but its RUN_ID
-![Imgur Image](postman_run_id.png)
+![plot](./README_screenshots/postman_run_id.png)
 ### Drop tables and truncate SQL_RUN_LOG
 You may want to run all SQL files from the scratch, and therefore drop all your app tables along with truncating the SQL_RUN_LOG table.  
 You can achieve that by either:
@@ -113,9 +113,11 @@ You can achieve that by either:
    NOTE: to use the API you must set a header key first. In this project the value hasn't been encrypted.  
          set the key as follows under "Headers" configuration: key-name: Api-Key-Test, value: ayelet  
          If not confgured you'll get a "Not Authorized" response.  
-![Imgur Image](postman_drop_tables.png)
+![plot](./README_screenshots/postman_drop_tables.png)
 
 # Application Errors
 The program will exist with error in the following cases:
 * There is a gap greater than 10 between to a pair of SQL files that should run, or between the RUN_ID of the last SQL file registered in SQL_RUN_LOG and the next SQL file that should run.
-* There is more than one SQL file with the same RUN_ID.
+* There is more than one SQL file with the same RUN_ID.  
+# DB Errors
+As mentioned above, if a failure occures while executing a statement in a SQL file, a ROLLBACK will be executed - applied on all DML statements in this file already executed prior the failure - and then the program will exit.
