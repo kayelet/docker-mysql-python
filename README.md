@@ -34,7 +34,7 @@ docker-compose.yml: creates the docker cluster with the two containers
 The project provides dev cluster allowing the user to run SQL scripts on the (Mysql) database and develop/test/run against it in Python environment.
 The run SQL files are registered in table SQL_RUN_LOG.
 
-### SQL scripts
+## SQL scripts
 1. Although the table created already in image, the script for creating log table SQL_RUN_LOG already provided unders sqls: sql_run_log_0.sql
    DO not change the RUN_ID (0) of script, it makes it the first to be run, before any other SQL file.
 2. The SQL file names must comply with name convention [a-zA-Z_]+_[0-9]+.sql
@@ -57,7 +57,7 @@ The run SQL files are registered in table SQL_RUN_LOG.
 You should now see the cluster via your docker-desktop
 ![Imgur Image](docker_mysql_python_cluster.png)
 
-### SQLs run flow
+## SQLs run flow
 1. Docker container cluster must be up and running when running the SQL files.
 When running Python script main.py, the run flow is as follows:
 2. If table SQL_RUN_LOG does not exist, it will be created by running provided script sql_run_log_0.sql
@@ -77,9 +77,9 @@ When running Python script main.py, the run flow is as follows:
    if running SQL/s from a different location in container, it must be specified.  
   
 ## Examples
-#### from container
+### from container
 ![Imgur Image](run_from_container_success_ex1.png)
-#### from terminal
+### from terminal
 ![Imgur Image](run_from_terminal_success_ex2.png)
 ### output when no files with RUN_ID higher than in SQL_RUN_LOG table found in sql files
 ![Imgur Image](run_from_terminal_no_files_to_run_ex3.png)
@@ -106,10 +106,13 @@ You can view the available end-points on the base Flask URL, as follows:
 ![Imgur Image](postman_run_id.png)
 ### Drop tables and truncate SQL_RUN_LOG
 You may want to run all SQL files from the scratch, and therefore drop all your app tables along with truncating the SQL_RUN_LOG table.  
-You can achieve that by entring end-point "drop_tables", BUT you have to set a header key first.  
-In this project the value hasn't been encrypted.  
-Key-name: Api-Key-Test, Value: ayelet  
-Configure the above in the api platform you're using under Headers. If not confgured you'll get a "Not Authorized" response.
+You can achieve that by either:
+1. Manually do that in the database itself (via the Mysql client or directly in the database)
+2. Use the "drop_tables" API. In this case you must have file /sqls/drop_tables.sql (already provided with example tables) with the  
+   relevant "drop table" statements (the "truncate" statement for the SQL_RUN_LOG already provided in file).  
+   NOTE: to use the API you must set a header key first. In this project the value hasn't been encrypted.  
+         set the key as follows under "Headers" configuration: key-name: Api-Key-Test, value: ayelet  
+         If not confgured you'll get a "Not Authorized" response.  
 ![Imgur Image](postman_drop_tables.png)
 
 # Application Errors
