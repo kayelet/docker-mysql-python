@@ -1,7 +1,7 @@
 # docker-mysql-python
-This is a python-mysql project based on docker cluster. The project has been created as a part of self-learning and practicing Docker principles.
+This is a mysql-python project based on docker configuration. The project has been created as a part of self-learning and practicing Docker principles.
 The docker-compose.yml file configures two-container cluster as follows:
-1. Mysql container. initialized with database MYSQL_DB and with creation of SQL log table SQL_RUN_LOG.
+1. Mysql container, initialized with database MYSQL_DB and with creation of SQL log table SQL_RUN_LOG.
 2. Applicative python container, includes the main program running the SQL files as well as Flask server code (app.py).
    The Flask app allows getting the run SQL related meta-data, as well as running some actions on the database, all via the provided API end points.
 
@@ -13,13 +13,13 @@ app/
   - main.py: main program; runs SQL files on the MYSQL database   
   - app.py: runs the Flask app  
   - database.py: contains the Database class with properties and methods run by the main.py script  
-  - Dockerfile: builds the mysql_flask_app container  
+  - Dockerfile: builds the mysql_python_app container  
   - requirements: contains list of Python required libraries  
   - templates/  
     - index.html: represents the HTML page shown in the Flask base URL http://localhost:5000  
 
 db/  
-  - init.sql: initializes the mysql_db container by creating database 'mysql_db' and creating SQL_RUN_LOG table.  
+  - init.sql: initializes the MYSQL DB as mentioned above.  
 
 sqls/   
   - sql_run_log_0.sql: in case table is dropped, this file creating it will be the first to run by main.py  
@@ -27,13 +27,13 @@ sqls/
   - employee_tab_20.sql: example file  
   - department_ins_30.sql: example file  
 
-docker-compose.yml: creates the docker cluster with the two containers  
+docker-compose.yml: creates the docker cluster with the two containers.    
   
 
 # Python-Mysql development Platform
 ## Purpose
 The project provides dev cluster allowing the user to run SQL scripts on the (Mysql) database and develop/test/run against it in Python environment.
-The program registers each of the run SQL files in log table SQL_RUN_LOG.
+The program adds a record with SUCCESS/FAILED status for each of the run SQL files in log table SQL_RUN_LOG.
 
 ## SQL scripts
 1. Although the table created already in image, the script for creating log table SQL_RUN_LOG already provided under the 'sqls/' directory: sql_run_log_0.sql
@@ -80,9 +80,9 @@ When running Python script main.py, the run flow is as follows:
 
 ## How to run the program
 * From container (from /app): python main.py  
-* From terminal: docker exec -ti mysql_flask_app python main.py  
-* To run a specific SQL: docker exec -ti mysql_flask_app python main.py \<SQL file\>  
-* To run SQLs from a directory: docker exec -ti mysql_flask_app python main.py \<path to SQLs directory\>  
+* From terminal: docker exec -ti mysql_python_app python main.py  
+* To run a specific SQL: docker exec -ti mysql_python_app python main.py \<SQL file\>  
+* To run SQLs from a directory: docker exec -ti mysql_python_app python main.py \<path to SQLs directory\>  
   Note: SQLs default path is /tmp  
   if running SQL/s from a different location in container, it must be specified.  
   
@@ -100,7 +100,7 @@ For a better view of your DB tables and run status in SQL_RUN_LOG table, configu
 Example, MySql Workbench:
 ![plot](./README_screenshots/config_mysql_workbench.png) 
 ## SQL_RUN_LOG view
-![plot](./README_screenshots/mysql_workbench_sql_run_log_view.png)
+![plot](./README_screenshots/sql_run_log_view.png)
 ## Operations available via Flask URL End-Points
 Recommended: use one of the available API platform on the internet to view/act on the available flask end-points as specified in the Flask base URL.  
 Example: Postman  
