@@ -118,7 +118,8 @@ You can achieve that by either:
 1. Manually do that in the database itself (via the Mysql client or directly in the database)
 2. Use the "drop_tables" API. In this case you must have file /sqls/drop_tables.sql (already provided with example tables) with the  
    relevant "drop table" statements (the "truncate" statement for the SQL_RUN_LOG already provided in file).  
-   NOTE: to use the API you must set a header key first. In this project the value hasn't been encrypted.  
+   * In case a table in one or more of the "drop table" statements does not exist, the program will not fail but rather continue to next statement.  
+   * To use the API you must set a header key first. In this project the value hasn't been encrypted.  
          set the key as follows under "Headers" configuration: key-name: Api-Key-Test, value: ayelet  
          If not confgured you'll get a "Not Authorized" response.  
 ![plot](./README_screenshots/postman_drop_tables.png)
