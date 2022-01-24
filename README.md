@@ -41,11 +41,11 @@ The program registers each of the run SQL files in log table SQL_RUN_LOG.
 2. The SQL file names must comply with name convention [a-z]+[a-z0-9_]+_[0-9]+.sql, otherwise they are not recognized by the program as valid SQL files.
    Although table/object name is not enforced, it is recommended to create file names with the name of the object and its type.
    Example: employee_tab_10.sql
-3. The number at the end of the file name represents the order in which the files should be run.  
+3. The file's extention (_<num>.sql) determines the order in which the files should be run.  
 4. This number is referred to as the SQL RUN_ID and written as such in the SQL_RUN_LOG table.
 5. Recommendation: create the SQL files with a gap of 10 between consecutive files. For example, department_tab_10.sql, employee_tab_20.sql etc; this
-   will allow you flexibility in filling unnoticed data gaps without having to change all scripts names if some scripts were forgotten.
-6. The gaps between SQL RUN_ID, though, must not exceed 10. For example, running department_tab_10.sql, employee_tab_21.sql with no SQL script with RUN_ID between 10 and 21,
+   will allow you flexibility in filling unnoticed DB data/objects gaps without having to change all scripts names if some scripts were forgotten.
+6. The gaps between SQL RUN_IDs, though, must not exceed 10. For example, running department_tab_10.sql, employee_tab_21.sql with no SQL script with RUN_ID between 10 and 21,
    will issue an error.
 7. Two SQL files cannot have the same RUN_ID. If found, an error will be issued.   
 
@@ -70,10 +70,11 @@ You should now see the cluster via your docker-desktop, as follows:
 When running Python script main.py, the run flow is as follows:
 2. If table SQL_RUN_LOG does not exist, it will be created by running provided script sql_run_log_0.sql
 3. A record with SQL file name, its RUN_ID, status (SUCCESS or FAILURE), error (in case of FAILURE) and date are written after the run of each SQL file.
-4. The SQL files are run according to the last RUN_ID found in SQL_RUN_LOG table with status SUCCESS.
+4. SQL file is allowed to contain a few statements, but only one record will be written in log table SQL_RUN_LOG for it.   
+5. The SQL files are run according to the last RUN_ID found in SQL_RUN_LOG table with status SUCCESS.
    example A: if scripts department_tab_10.sql, employee_tab_20.sql and department_tab_10.sql, employee_tab_20.sql passed successfully while 
    employee_ins_30.sql failed, the next time main.py will run, the first SQL file to run with be with the smallest RUN_ID that is greater than 20.
-5. The main.py script will exit with error at the first FAILURE. Before exiting, a ROLLBACK will be executed for all file's statements.  
+6. The main.py script will exit with error at the first FAILURE. Before exiting, a ROLLBACK will be executed for all file's statements.  
    Note: rollback can be applied only for DML statements.
 
 ## How to run the program
@@ -122,10 +123,3 @@ You can achieve that by either:
          set the key as follows under "Headers" configuration: key-name: Api-Key-Test, value: ayelet  
          If not confgured you'll get a "Not Authorized" response.  
 ![plot](./README_screenshots/postman_drop_tables.png)
-
-# Application Errors
-The program will exist with error in the following cases:
-* There is a gap greater than 10 between to a pair of SQL files that should run, or between the RUN_ID of the last SQL file registered in SQL_RUN_LOG and the next SQL file that should run.
-* There is more than one SQL file with the same RUN_ID.  
-# DB Errors
-As mentioned above, if a failure occurs while executing a statement in a SQL file, a ROLLBACK will be executed - applied on all DML statements in this file already executed prior the failure - and then the program will exit.
