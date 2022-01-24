@@ -1,7 +1,8 @@
 CREATE DATABASE mysql_db;
 use mysql_db;
 
-CREATE TABLE IF NOT EXISTS sql_run_log (
+CREATE TABLE IF NOT EXISTS SQL_RUN_LOG
+(
   run_id int NOT NULL,
   sql_name varchar(100) NOT NULL,
   run_status varchar(20) NOT NULL,
