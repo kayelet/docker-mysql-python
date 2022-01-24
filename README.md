@@ -16,7 +16,7 @@ app/
   - Dockerfile: builds the mysql_flask_app container  
   - requirements: contains list of Python required libraries  
   - templates/  
-    - index.html (represents the HTML page shown in the Flask base URL http://localhost:5000) 
+    - index.html: represents the HTML page shown in the Flask base URL http://localhost:5000  
 
 db/  
   - init.sql: initializes the mysql_db container by creating database 'mysql_db' and creating SQL_RUN_LOG table.  
@@ -82,32 +82,30 @@ When running Python script main.py, the run flow is as follows:
 * From container (from /app): python main.py  
 * From terminal: docker exec -ti mysql_flask_app python main.py  
 * To run a specific SQL: docker exec -ti mysql_flask_app python main.py \<SQL file\>  
-* To run SQLs from a directory: docker exec -ti mysql_flask_app python main.py \<path to SQLs directory\>
-** Note: SQLs default path is /tmp  
-   if running SQL/s from a different location in container, it must be specified.  
+* To run SQLs from a directory: docker exec -ti mysql_flask_app python main.py \<path to SQLs directory\>  
+  Note: SQLs default path is /tmp  
+  if running SQL/s from a different location in container, it must be specified.  
   
 ## Examples
-### from container
+### From container
 ![plot](./README_screenshots/run_from_container_success_ex1.png)
-### from terminal
+### From terminal
 ![plot](./README_screenshots/run_from_terminal_success_ex2.png)
-### output when no files with RUN_ID higher than in SQL_RUN_LOG table found in sql files
+### Output when no files with RUN_ID higher than in SQL_RUN_LOG table found in sql files
 ![plot](./README_screenshots/run_from_terminal_no_files_to_run_ex3.png)
-
+### Failed SQL
+![plot](./README_screenshots/run_from_terminal_failed_sql.png)   
 ## View Database on Mysql Client UI
 For a better view of your DB tables and run status in SQL_RUN_LOG table, configure DB on one of the Mysql available UIs.
 Example, MySql Workbench:
 ![plot](./README_screenshots/config_mysql_workbench.png) 
-  
 ## SQL_RUN_LOG view
-![plot](./README_screenshots/mysql_workbench_sql_run_log_v1.png)
-
+![plot](./README_screenshots/mysql_workbench_sql_run_log_view.png)
 ## Operations available via Flask URL End-Points
 Recommended: use one of the available API platform on the internet to view/act on the available flask end-points as specified in the Flask base URL.  
 Example: Postman  
 You can view the available end-points on the base Flask URL, as follows:
 ![plot](./README_screenshots/postman_base_url.png)
-
 ## Examples
 ### Getting the data of all SQL files that ran successfully
 ![plot](./README_screenshots/postman_success.png)  
