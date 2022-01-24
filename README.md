@@ -58,8 +58,9 @@ The program registers each of the run SQL files in log table SQL_RUN_LOG.
 
 ## Setup and run the Docker cluster
 (Docker-desktop installation assumed)
-1. clone this repository to your directory path on your OS.
-2. go to the local/repository/path
+1. Clone this repository to your directory path on your OS. Project directory docker-mysql-python will be created.
+![plot](./README_screenshots/git_clone.png)
+2. Open a terminal window and go to local/path/to/docker-mysql-python
 3. run docker-compose up
 
 You should now see the cluster via your docker-desktop, as follows: 
