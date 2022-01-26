@@ -1,5 +1,6 @@
 # docker-mysql-python
-This is a mysql-python project based on docker configuration. The project has been created as a part of self-learning and practicing Docker principles.
+This is a mysql-python project based on docker configuration, which provides a version control tool/mechanizm for database migration.  
+The project has been created as a part of self-learning and practicing Docker principles.
 The docker-compose.yml file configures two-container cluster as follows:
 1. Mysql container, initialized with database MYSQL_DB and with creation of SQL log table SQL_RUN_LOG.
 2. Applicative python container, includes the main program running the SQL files as well as Flask server code (app.py).
@@ -33,7 +34,7 @@ docker-compose.yml: creates the docker cluster with the two containers.
 # Python-Mysql development Platform
 ## Purpose
 The project provides dev cluster allowing the user to run SQL scripts on the (Mysql) database and develop/test/run against it in Python environment.
-The program adds a record with SUCCESS/FAILED status for each of the run SQL files in log table SQL_RUN_LOG.
+The program operates as a version control mechanizm by registering a record with SUCCESS/FAILED status for each of the run SQL files in log table SQL_RUN_LOG.
 
 ## SQL scripts
 1. Although the table created already in image, the script for creating log table SQL_RUN_LOG already provided under the 'sqls/' directory: sql_run_log_0.sql
